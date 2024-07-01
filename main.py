@@ -118,9 +118,7 @@ def Get_Customer_Stay():
 
     st.session_state.CUSTOMER['stay_address'] = st.text_input('What is the complete address for where you will you be staying?', placeholder='123 Four Street, Destin, FL 32540')
 
-    shopping = st.button('Begin Shopping', use_container_width=True, type='primary')
-
-    if shopping:
+    if st.button('Begin Shopping', use_container_width=True, type='primary'):
         if not st.session_state.CUSTOMER['stay_address']:
             st.warning('Please provide an address to proceed.')
 
@@ -144,8 +142,8 @@ def Get_Customer_Stay():
                     st.session_state.CUSTOMER['stay_area']   = area['name']
                     st.session_state.CUSTOMER['stay_forbid'] = area['forbid']
 
-                    # st.session_state.STATE = 'SHOP'
-                    Shop()
+                    st.session_state.STATE = 'SHOP'
+                    st.rerun()
 
 
 
@@ -314,6 +312,10 @@ match st.session_state.STATE:
         Header(withLinks=True)
         Greeting(withDiscount=True)
         Get_Customer_Stay()
+    case 'SHOP':
+        Header(withLinks=False)
+        Greeting(withDiscount=False)
+        Shop()
     case 'DONE':
         Header(withLinks=False)
         Goodbye()
