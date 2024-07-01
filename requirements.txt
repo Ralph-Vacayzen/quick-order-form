@@ -4,4 +4,3 @@ requests
 gspread
 shapely
 pandas
-math
