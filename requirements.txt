@@ -4,5 +4,4 @@ requests
 gspread
 shapely
 pandas
-random
 math
