@@ -282,7 +282,7 @@ def Shop():
                     interest = key[6:]
                     interest_array.append(interest)
         
-        interests = ', '.join(interest_array)
+        interests = '\n'.join(interest_array)
 
         asset_array = []
 
