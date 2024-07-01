@@ -61,7 +61,7 @@ def Goodbye():
     st.write('')
     st.success('**Order request submitted!**')
     st.info('An agent will be in touch shortly.')
-
+    st.write('')
     socials = SocialMediaIcons(st.secrets['socials'])
     socials.render()
 
