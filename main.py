@@ -22,7 +22,6 @@ hide_streamlit_style = """
             .block-container
             {
                 padding-top: 1rem;
-                padding-bottom: 0rem;
                 margin-top: 1rem;
             }
             </style>
