@@ -313,10 +313,10 @@ match st.session_state.STATE:
         Header(withLinks=True)
         Greeting(withDiscount=True)
         Get_Customer_Stay()
-    # case 'SHOP':
-    #     Header(withLinks=False)
-    #     Greeting(withDiscount=False)
-    #     Shop()
+    case 'SHOP':
+        # Header(withLinks=False)
+        # Greeting(withDiscount=False)
+        Shop()
     case 'DONE':
         Header(withLinks=False)
         Goodbye()
