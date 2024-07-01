@@ -266,6 +266,7 @@ def Shop():
     Get_Guest_Details()
     
     if st.button('🏖️ Submit', use_container_width=True, type='primary', key='shop_checkout'):
+        st.toast('Submitting...')
         interest_array = []
         
         for key in st.session_state.keys():
