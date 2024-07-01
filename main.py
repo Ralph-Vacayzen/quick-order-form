@@ -314,8 +314,8 @@ match st.session_state.STATE:
         Greeting(withDiscount=True)
         Get_Customer_Stay()
     case 'SHOP':
-        # Header(withLinks=False)
-        # Greeting(withDiscount=False)
+        Header(withLinks=False)
+        Greeting(withDiscount=False)
         Shop()
     case 'DONE':
         Header(withLinks=False)
