@@ -209,7 +209,6 @@ def Shop():
         if st.session_state.CUSTOMER['stay_area']:
             st.info(f'You will be staying in **{st.session_state.CUSTOMER['stay_area']}**, and the community permits our whole product offering!', icon=':material/where_to_vote:')
     
-    Get_Guest_Details()
 
     for asset in df:
         if (st.session_state.CUSTOMER['stay_forbid'] is not None) and (df[asset].Product in st.session_state.CUSTOMER['stay_forbid']):
@@ -251,6 +250,8 @@ def Shop():
                 case 1:
                     r.checkbox(service, key=f'check_{service}')
                     placement = 0
+    
+    Get_Guest_Details()
     
     if st.button('🏖️ Submit', use_container_width=True, type='primary', key='shop_checkout'):
         interest_array = []
