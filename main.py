@@ -16,6 +16,7 @@ st.set_page_config(page_title='Vacayzen | Quick Order Form', page_icon=':materia
 hide_streamlit_style = """
             <style>
             #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
             header {visibility: hidden;}
 
             .block-container
