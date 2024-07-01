@@ -59,7 +59,7 @@ def Greeting(withDiscount):
 def Goodbye():
     st.write('')
     st.success('**Order request submitted!**')
-    st.info('An agent will give you a call shortly for payment.')
+    st.info('An agent will be in touch shortly.')
 
 
 
