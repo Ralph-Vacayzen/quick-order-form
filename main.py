@@ -58,7 +58,8 @@ def Greeting(withDiscount):
 
 def Goodbye():
     st.write('')
-    st.success('**Your order request has been submitted!** An agent will give you a call shortly for payment.')
+    st.success('**Order request submitted!**')
+    st.info('An agent will give you a call shortly for payment.')
 
 
 
@@ -143,7 +144,7 @@ def Get_Customer_Stay():
 
 
 def Get_Guest_Details():
-    '###'
+    '#'
     st.write('**ABOUT YOU**')
 
     if 'famous_name' not in st.session_state:
