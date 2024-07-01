@@ -143,7 +143,8 @@ def Get_Customer_Stay():
                     st.session_state.CUSTOMER['stay_forbid'] = area['forbid']
 
                     st.session_state.STATE = 'SHOP'
-                    st.rerun()
+                    # st.rerun()
+                    Shop()
 
 
 
