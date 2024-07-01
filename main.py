@@ -50,7 +50,7 @@ def Header(withLinks):
 
 
 def Greeting(withDiscount):
-    st.title('Quick Order Form', help="Browse **Vacayzen**'s top products in a shop that is **catered to your stay**.")
+    st.title('Quick Order', help="Browse **Vacayzen**'s top products in a shop that is **catered to your stay**.")
     
     if withDiscount:
         st.success('Orders placed here will have a **10% discount** applied automatically.')
@@ -58,8 +58,7 @@ def Greeting(withDiscount):
 
 def Goodbye():
     st.write('')
-    st.success('**Your order request has been submitted!**')
-    st.info(f'An agent will give you a call shortly for payment.')
+    st.success('**Your order request has been submitted!** An agent will give you a call shortly for payment.')
 
 
 
@@ -144,6 +143,7 @@ def Get_Customer_Stay():
 
 
 def Get_Guest_Details():
+    '###'
     st.write('**ABOUT YOU**')
 
     if 'famous_name' not in st.session_state:
