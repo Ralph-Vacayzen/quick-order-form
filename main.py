@@ -142,7 +142,7 @@ def Get_Customer_Stay():
                     st.session_state.CUSTOMER['stay_area']   = area['name']
                     st.session_state.CUSTOMER['stay_forbid'] = area['forbid']
 
-                    # st.session_state.STATE = 'SHOP'
+                    st.session_state.STATE = 'SHOP'
                     # st.rerun()
                     Shop()
 
@@ -316,6 +316,7 @@ match st.session_state.STATE:
     case 'SHOP':
         Header(withLinks=True)
         Greeting(withDiscount=True)
+        Get_Customer_Stay()
         Shop()
     case 'DONE':
         Header(withLinks=False)
