@@ -12,6 +12,16 @@ from shapely.geometry import Point, Polygon
 
 st.set_page_config(page_title='Vacayzen | Quick Order Form', page_icon=':material/shopping_bag:')
 
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+
+
 if 'STATE' not in st.session_state:
     st.session_state.STATE = 'GREETING'
 
