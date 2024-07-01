@@ -6,6 +6,7 @@ import math
 import gspread
 
 from oauth2client.service_account import ServiceAccountCredentials
+from st_social_media_links import SocialMediaIcons
 from shapely.geometry import Point, Polygon
 
 
@@ -60,6 +61,9 @@ def Goodbye():
     st.write('')
     st.success('**Order request submitted!**')
     st.info('An agent will be in touch shortly.')
+
+    socials = SocialMediaIcons(st.secrets['socials'])
+    socials.render()
 
 
 
