@@ -148,7 +148,7 @@ def Get_Customer_Stay():
 
 
 def Get_Guest_Details():
-    st.header('**ABOUT YOU**')
+    st.header('About You')
 
     if 'famous_name' not in st.session_state:
         famous_names = ['Keanu Reeves','Bruce Lee','Albert Einstein','Elivs Presley','Captain America','Clark Kent']
