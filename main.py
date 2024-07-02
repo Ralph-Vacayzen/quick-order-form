@@ -184,7 +184,7 @@ def Get_Guest_Details():
 
     l, m, r = st.columns(3)
 
-    st.session_state.CUSTOMER['name_first']    = l.text_input('What is your name?', placeholder=f'{st.session_state.famous_name[0]} {st.session_state.famous_name[1]}')
+    st.session_state.CUSTOMER['name_first']    = l.text_input('What is your name?', placeholder=st.session_state.famous_name)
     st.session_state.CUSTOMER['phone_number']  = m.text_input('Your phone number?',     placeholder='123-456-7890')
     st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?',     placeholder=st.session_state.punny_email)
     how                                        = st.selectbox('How did you hear about Vacayzen?', options=options, placeholder='Choose an option.', index=None)
