@@ -160,6 +160,7 @@ def Get_Customer_Stay():
                     st.session_state.STATE = 'SHOP'
                     # st.rerun()
                     Shop()
+                    st.rerun()
 
 
 
