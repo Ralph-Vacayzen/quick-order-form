@@ -201,15 +201,19 @@ def Get_Guest_Details():
 def ItemCard(asset):
     isMinimum = not math.isnan(asset['attributes'].MinimumRate)
 
+    rate = [f'${asset['attributes'].FirstDayRate}', f'${asset['attributes'].AdditionalDayRate}', f'${asset['attributes'].MinimumRate}']
+
     with st.container(border=True):
-        l, r = st.columns(2)
         if isMinimum:
-            # l.markdown(f'**{asset['name']}**', help=f'First Day Rate: ${asset['attributes'].FirstDayRate}\n\nAdditional Day Rate: ${asset['attributes'].AdditionalDayRate}\n\nMinimum Rate: ${asset['attributes'].MinimumRate}')
-            l.write(f'**{asset['name']}**')
-            l.write(f'First Day: \${asset['attributes'].FirstDayRate}\n\nAdditional Day: \${asset['attributes'].AdditionalDayRate}\n\nMinimum: \${asset['attributes'].MinimumRate}')
+            rate = pd.DataFrame([rate], columns=['First','Additional','Minimum'])
+            st.write(f'**{asset['name']}**')
         else:
-            l.markdown(f'**{asset['name']}**', help=f'First Day Rate: ${asset['attributes'].FirstDayRate}\n\nAdditional Day Rate: ${asset['attributes'].AdditionalDayRate}')
-        count = r.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
+            rate = rate[:2]
+            rate = pd.DataFrame([rate], columns=['First','Additional'])
+            st.markdown(f'**{asset['name']}**')
+        
+        st.dataframe(rate, use_container_width=True, hide_index=True)
+        count = st.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
 
 
 
