@@ -135,7 +135,7 @@ def Get_Customer_Stay():
 
     if st.button('Begin Shopping', use_container_width=True, type='primary'):
         if not st.session_state.CUSTOMER['stay_address']:
-            st.warning('Please provide an address to proceed.')
+            st.warning('Please provide an address.')
 
         else:
             location = Address_to_Coordinates(st.session_state.CUSTOMER['stay_address'])
@@ -204,7 +204,9 @@ def ItemCard(asset):
     with st.container(border=True):
         l, r = st.columns(2)
         if isMinimum:
-            l.markdown(f'**{asset['name']}**', help=f'First Day Rate: ${asset['attributes'].FirstDayRate}\n\nAdditional Day Rate: ${asset['attributes'].AdditionalDayRate}\n\nMinimum Rate: ${asset['attributes'].MinimumRate}')
+            # l.markdown(f'**{asset['name']}**', help=f'First Day Rate: ${asset['attributes'].FirstDayRate}\n\nAdditional Day Rate: ${asset['attributes'].AdditionalDayRate}\n\nMinimum Rate: ${asset['attributes'].MinimumRate}')
+            l.write(f'**{asset['name']}**')
+            l.write(f'First Day: \${asset['attributes'].FirstDayRate}\n\nAdditional Day: \${asset['attributes'].AdditionalDayRate}\n\nMinimum: \${asset['attributes'].MinimumRate}')
         else:
             l.markdown(f'**{asset['name']}**', help=f'First Day Rate: ${asset['attributes'].FirstDayRate}\n\nAdditional Day Rate: ${asset['attributes'].AdditionalDayRate}')
         count = r.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
@@ -240,14 +242,13 @@ def Shop():
         for asset in assets[asset_group]:
             ItemCard(asset)
     
-    st.divider()
-    st.write(f'**Check if you would like additional information on the following:**')
+    st.header('Additional Services', help='An agent will provide more information on services per your request.')
     services = [
         'Beach Bonfires',
-        'Sunset Photoshoot',
         'Airport Transfer / Transport',
         'Private Chef',
         'Grocery Shopping',
+        'Sunset Photoshoot',
         'Fishing Trips',
         'Paddleboard & Kayak Rentals',
         'Babysitting'
@@ -255,6 +256,8 @@ def Shop():
 
     placement = 0
     with st.container(border=True):
+        st.write(f'Check if you would like additional information on the following:')
+        st.write(f'')
         l, r = st.columns(2)
 
         for service in services:
