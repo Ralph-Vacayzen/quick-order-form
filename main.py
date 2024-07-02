@@ -168,7 +168,6 @@ def Get_Guest_Details():
 
     if 'famous_name' not in st.session_state:
         famous_names = ['Keanu Reeves','Bruce Lee','Albert Einstein','Elivs Presley','Captain America','Clark Kent']
-        st.session_state.famous_name = random.choice(famous_names).split()
 
     if 'punny_email' not in st.session_state:
         punny_emails = ['relaxing@thebeach.now','laughing@greatjokes.haha','looking@sunsets.wow']
