@@ -13,20 +13,20 @@ from shapely.geometry import Point, Polygon
 st.set_page_config(page_title='Vacayzen | Quick Order Form', page_icon=':material/shopping_bag:')
 
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
+# hide_streamlit_style = """
+#             <style>
+#             #MainMenu {visibility: hidden;}
+#             footer {visibility: hidden;}
+#             header {visibility: hidden;}
 
-            .block-container
-            {
-                padding-top: 1rem;
-                margin-top: 1rem;
-            }
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+#             .block-container
+#             {
+#                 padding-top: 1rem;
+#                 margin-top: 1rem;
+#             }
+#             </style>
+#             """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 
 if 'STATE' not in st.session_state:
@@ -41,8 +41,7 @@ if 'CUSTOMER' not in st.session_state:
     'stay_longitude': None,
     'stay_area':      None,
     'stay_forbid':    None,
-    'name_first':     None,
-    'name_last':      None,
+    'name':           None,
     'phone_number':   None,
     'email_address':  None,
     'how':            None,
@@ -54,24 +53,24 @@ if 'CUSTOMER' not in st.session_state:
 def Header(withLinks):
     l, m, r = st.columns(3)
     m.image(st.secrets['logo'])
+    # style = "<style>p {text-align: center;}</style>"
+    # st.markdown(style, unsafe_allow_html=True)
+    # st.columns(3)[1].header("hello world")
+
 
     if withLinks:
-        st.write('**WAYS TO ORDER**')
+        st.markdown('**WAYS TO ORDER**')
+        st.link_button('⚡️ **ORDER ONLINE** (SAVE 5%) ⚡️', '#quick-order-form', use_container_width=True)
         l, r = st.columns(2)
-        l.link_button('⚡️ QUICK ORDER FORM ⚡️', "#quick-order-form", use_container_width=True, help='10% OFF',)
-        l.link_button('WEBSITE', 'https://www.vacayzen.com', use_container_width=True, help='10% OFF')
-        r.link_button('BY E-MAIL', st.secrets['email'], use_container_width=True, help='5% OFF')
-        r.link_button('BY PHONE', st.secrets['phone'], use_container_width=True)
+        l.link_button('BY E-MAIL', st.secrets['email'], use_container_width=True)
+        r.link_button('BY PHONE',  st.secrets['phone'], use_container_width=True)
 
 
 
 
 
-def Greeting(withDiscount):
-    st.title('Quick Order', help="Browse **Vacayzen**'s top products in a shop that is **catered to your stay**.")
-    
-    if withDiscount:
-        st.success('Orders placed here will have a **10% discount** applied automatically.')
+def Greeting():
+    st.title('Place Order')
 
 
 def Goodbye():
@@ -123,11 +122,10 @@ def Check_Against_Geofences(latitude, longitude):
 
 
 def Get_Customer_Stay():
-    st.markdown('**ABOUT YOUR STAY**', help='We use this information **to save you time and clicks** during your booking process.')
 
     l, r      = st.columns(2)
 
-    st.session_state.CUSTOMER['arrival']   = l.date_input('When is your arrival?', min_value=pd.to_datetime('today'))
+    st.session_state.CUSTOMER['arrival']   = l.date_input('When do you arrive?', min_value=pd.to_datetime('today'))
     st.session_state.CUSTOMER['departure'] = r.date_input('When do you depart?', value=st.session_state.CUSTOMER['arrival']+pd.Timedelta(days=1), min_value=st.session_state.CUSTOMER['arrival']+pd.Timedelta(days=1))
 
     st.session_state.CUSTOMER['arrival']   = st.session_state.CUSTOMER['arrival'].strftime('%m/%d/%Y')
@@ -177,28 +175,26 @@ def Get_Guest_Details():
         st.session_state.punny_email  = random.choice(punny_emails)
 
     options = [
-        'Our property manager told us about you.',
-        'We saw your equipment (trucks, bikes, golf carts, etc).',
-        'We found you online (Google, Facebook, etc).',
+        'Property Manager',
+        'Saw Equipment / Vehicles',
+        'Online (Google, Facebook, etc.)',
         'A friend told us about you.',
         'Other.'
         ]
 
     l, m, r = st.columns(3)
 
-    st.session_state.CUSTOMER['name_first']    = l.text_input('What is your first name?', placeholder=st.session_state.famous_name[0])
-    st.session_state.CUSTOMER['name_last']     = m.text_input('Your last name?',          placeholder=st.session_state.famous_name[1])
+    st.session_state.CUSTOMER['name_first']    = l.text_input('What is your name?', placeholder=f'{st.session_state.famous_name[0]} {st.session_state.famous_name[1]}')
+    st.session_state.CUSTOMER['phone_number']  = m.text_input('Your phone number?',     placeholder='123-456-7890')
     st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?',     placeholder=st.session_state.punny_email)
-
-    l, r = st.columns([1,2])
-    st.session_state.CUSTOMER['phone_number']  = l.text_input('Your phone number?',     placeholder='123-456-7890')
-    how                                        = r.selectbox('How did you hear about Vacayzen?', options=options, placeholder='Choose an option.', index=None)
+    how                                        = st.selectbox('How did you hear about Vacayzen?', options=options, placeholder='Choose an option.', index=None)
 
     if how == 'Other.':
         how_2 = st.text_input('Can you elaborate on how you heard about us?', placeholder='Our meeting was destiny.')
         st.session_state.CUSTOMER['how'] = how_2
     else:
         st.session_state.CUSTOMER['how'] = how
+
 
 
 
@@ -244,7 +240,8 @@ def Shop():
         for asset in assets[asset_group]:
             ItemCard(asset)
     
-    st.header(f'**Additional Services**', help='Check the boxes for additional services that you would like to learn more about.')
+    st.divider()
+    st.write(f'**Check if you would like additional information on the following:**')
     services = [
         'Beach Bonfires',
         'Sunset Photoshoot',
@@ -297,8 +294,7 @@ def Shop():
 
         submission = {
             'submitted_time': pd.to_datetime('today').strftime('%m/%d/%Y %H:%M:%S'),
-            'first_name': st.session_state.CUSTOMER['name_first'],
-            'last_name': st.session_state.CUSTOMER['name_last'],
+            'name': st.session_state.CUSTOMER['name'],
             'phone_number': st.session_state.CUSTOMER['phone_number'],
             'email_address': st.session_state.CUSTOMER['email_address'],
             'how': st.session_state.CUSTOMER['how'],
@@ -329,11 +325,11 @@ def Shop():
 match st.session_state.STATE:
     case 'GREETING':
         Header(withLinks=True)
-        Greeting(withDiscount=True)
+        Greeting()
         Get_Customer_Stay()
     case 'SHOP':
         Header(withLinks=True)
-        Greeting(withDiscount=True)
+        Greeting()
         Get_Customer_Stay()
         Shop()
     case 'DONE':

@@ -1,6 +1,36 @@
 {
-  "20\" Bike Rental": {
-    "ID": 6,
+  "Six Seater Golf Cart Rental": {
+    "ID": 243,
+    "Status": "Active",
+    "Product": "Golf Cart Rentals",
+    "ApplicableRateEngine": "7thDayFree",
+    "DamageWaiver": "Never",
+    "DamageWaiverPercent": 0,
+    "RentalAddOnFee": "Never",
+    "RentalAddOnFeePercent": 0.06,
+    "Taxable": true,
+    "AssetDescription": "",
+    "FirstDayRate": 550,
+    "AdditionalDayRate": 75,
+    "MinimumRate": 625
+  },
+  "Four Seater Golf Cart Rental": {
+    "ID": 242,
+    "Status": "Active",
+    "Product": "Golf Cart Rentals",
+    "ApplicableRateEngine": "7thDayFree",
+    "DamageWaiver": "Never",
+    "DamageWaiverPercent": 0,
+    "RentalAddOnFee": "Never",
+    "RentalAddOnFeePercent": 0.06,
+    "Taxable": true,
+    "AssetDescription": "",
+    "FirstDayRate": 375,
+    "AdditionalDayRate": 75,
+    "MinimumRate": 450
+  },
+  "26\" Bike Rental - Adult": {
+    "ID": 12,
     "Status": "Active",
     "Product": "Bike Rentals",
     "ApplicableRateEngine": "7thDayFree",
@@ -8,12 +38,12 @@
     "DamageWaiverPercent": 0.05,
     "RentalAddOnFee": "Optional",
     "RentalAddOnFeePercent": 0.06,
-    "Taxable": true,
+    "Taxable": false,
     "AssetDescription": "Vacayzen guarantees all deliveries by 6 PM. Start date should be your check-in day. If you want Vacayzen bikes at your 30A house when you arrive. End date should be your check-out day. Bike rental pick-up starts at 10:00am Bike lock included with rental of all 24” and 26” adult bikes. The lock code will be the last 4-digits of the phone number provided. Kids bike rentals come with a complimentary helmet upon request.",
-    "FirstDayRate": 40,
+    "FirstDayRate": 44,
     "AdditionalDayRate": 5
   },
-  "24\" Bike Rental": {
+  "24\" Bike Rental - Teen": {
     "ID": 10,
     "Status": "Active",
     "Product": "Bike Rentals",
@@ -27,8 +57,8 @@
     "FirstDayRate": 44,
     "AdditionalDayRate": 5
   },
-  "26\" Bike Rental": {
-    "ID": 12,
+  "20\" Bike Rental - Youth": {
+    "ID": 6,
     "Status": "Active",
     "Product": "Bike Rentals",
     "ApplicableRateEngine": "7thDayFree",
@@ -36,9 +66,9 @@
     "DamageWaiverPercent": 0.05,
     "RentalAddOnFee": "Optional",
     "RentalAddOnFeePercent": 0.06,
-    "Taxable": false,
+    "Taxable": true,
     "AssetDescription": "Vacayzen guarantees all deliveries by 6 PM. Start date should be your check-in day. If you want Vacayzen bikes at your 30A house when you arrive. End date should be your check-out day. Bike rental pick-up starts at 10:00am Bike lock included with rental of all 24” and 26” adult bikes. The lock code will be the last 4-digits of the phone number provided. Kids bike rentals come with a complimentary helmet upon request.",
-    "FirstDayRate": 44,
+    "FirstDayRate": 40,
     "AdditionalDayRate": 5
   },
   "Classic Beach Service Set Up": {
@@ -68,35 +98,5 @@
     "AssetDescription": "They are delivered for free to your vacation doorstep. Note: This set is not set up daily by Vacayzen. Size Recommendation: Chairs are recommended for those 240 pounds or less.",
     "FirstDayRate": 60,
     "AdditionalDayRate": 10
-  },
-  "Four Seater Golf Cart Rental": {
-    "ID": 242,
-    "Status": "Active",
-    "Product": "Golf Cart Rentals",
-    "ApplicableRateEngine": "7thDayFree",
-    "DamageWaiver": "Never",
-    "DamageWaiverPercent": 0,
-    "RentalAddOnFee": "Never",
-    "RentalAddOnFeePercent": 0.06,
-    "Taxable": true,
-    "AssetDescription": "GOLF CART RESTRICTIONS: Please note, while we would love to serve everyone, we DO NOT provide Golf Cart rentals to the following communities due to their restrictions: WaterColor, Seaside, Sandestin, WaterSound, Alys Beach, and Rosemary Beach. GOLF CART REQUIREMENTS: Vacayzen customers agree and must adhere to: community, local, and state laws pertaining to street legal golf carts and LSVs. Delivery and pick up costs are included in the rates below. Drivers must hold a legal driver’s license and be 21 years of age or older to operate this item. Proof of verification is required upon delivery of all carts. The cart will be electric or gas based on availability. A valid driver’s license and insurance card will be necessary to complete the booking of any golf cart. There is a 6-day minimum on all orders made in peak season (May 20-Aug. 10) There is a 4-day minimum on all orders made in off-season (Aug. 11-May 19) Note: All golf cart orders are finalized upon payment and cannot be refunded.",
-    "FirstDayRate": 375,
-    "AdditionalDayRate": 75,
-    "MinimumRate": 450
-  },
-  "Six Seater Golf Cart Rental": {
-    "ID": 243,
-    "Status": "Active",
-    "Product": "Golf Cart Rentals",
-    "ApplicableRateEngine": "7thDayFree",
-    "DamageWaiver": "Never",
-    "DamageWaiverPercent": 0,
-    "RentalAddOnFee": "Never",
-    "RentalAddOnFeePercent": 0.06,
-    "Taxable": true,
-    "AssetDescription": "GOLF CART RESTRICTIONS: Please note, while we would love to serve everyone, we DO NOT provide Golf Cart rentals to the following communities due to their restrictions: WaterColor, Seaside, Sandestin, WaterSound, Alys Beach, and Rosemary Beach. GOLF CART REQUIREMENTS: Vacayzen customers agree and must adhere to: community, local, and state laws pertaining to street legal golf carts and LSVs. Delivery and pick up costs are included in the rates below. Drivers must hold a legal driver’s license and be 21 years of age or older to operate this item. Proof of verification is required upon delivery of all carts. The cart will be electric or gas based on availability. A valid driver’s license and insurance card will be necessary to complete the booking of any golf cart. There is a 6-day minimum on all orders made in peak season (May 20-Aug. 10) There is a 4-day minimum on all orders made in off-season (Aug. 11-May 19) Note: All golf cart orders are finalized upon payment and cannot be refunded.",
-    "FirstDayRate": 550,
-    "AdditionalDayRate": 75,
-    "MinimumRate": 625
   }
 }
