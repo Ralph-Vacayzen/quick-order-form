@@ -2,7 +2,7 @@ st_social_media_links
 oauth2client
 streamlit
 requests
-st_keyup
+streamlit-keyup
 gspread
 shapely
 pandas
