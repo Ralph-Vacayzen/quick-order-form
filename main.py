@@ -8,6 +8,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from st_social_media_links import SocialMediaIcons
 from shapely.geometry import Point, Polygon
+from st_keyup import st_keyup
 
 
 st.set_page_config(page_title='Vacayzen | Quick Order Form', page_icon=':material/shopping_bag:')
@@ -120,8 +121,22 @@ def Check_Against_Geofences(latitude, longitude):
         
     return {'name': None,     'forbid': None}
 
+#TEMP
+def get_place_suggestions(input_text, api_key):
+    endpoint = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
+    params = {
+        "input": input_text + ' Beach, FL, USA',
+        "types": "address",
+        "key": api_key
+    }
+    response = requests.get(endpoint, params=params)
+    return response.json()
 
 def Get_Customer_Stay():
+    map_key = st.secrets['map_key']
+
+    if "suggestions" not in st.session_state:
+        st.session_state.suggestions = []
 
     l, r      = st.columns(2)
 
@@ -131,7 +146,21 @@ def Get_Customer_Stay():
     st.session_state.CUSTOMER['arrival']   = st.session_state.CUSTOMER['arrival'].strftime('%m/%d/%Y')
     st.session_state.CUSTOMER['departure'] = st.session_state.CUSTOMER['departure'].strftime('%m/%d/%Y')
 
-    st.session_state.CUSTOMER['stay_address'] = st.text_input('What is the complete address for where you will you be staying?', placeholder='123 Four Street, Destin, FL 32540')
+    l, r      = st.columns([1,2])
+
+    with l:
+        address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=100)
+
+    #TEMP
+    if address:
+        suggestions = get_place_suggestions(address, map_key)
+        if suggestions.get("predictions"):
+            st.session_state.suggestions = [prediction["description"] for prediction in suggestions["predictions"]]
+        else:
+            st.session_state.suggestions = []
+
+    st.session_state.CUSTOMER['stay_address'] = r.selectbox("Full address:", st.session_state.suggestions)
+
 
     if st.button('Begin Shopping', use_container_width=True, type='primary'):
         if not st.session_state.CUSTOMER['stay_address']:
