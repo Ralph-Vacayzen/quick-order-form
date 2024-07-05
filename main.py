@@ -54,14 +54,10 @@ if 'CUSTOMER' not in st.session_state:
 def Header(withLinks):
     l, m, r = st.columns(3)
     m.image(st.secrets['logo'])
-    # style = "<style>p {text-align: center;}</style>"
-    # st.markdown(style, unsafe_allow_html=True)
-    # st.columns(3)[1].header("hello world")
-
 
     if withLinks:
         st.markdown('**WAYS TO ORDER**')
-        st.link_button('⚡️ **ORDER ONLINE** (SAVE 5%) ⚡️', '#quick-order-form', use_container_width=True)
+        st.button('⚡️ **ORDER ONLINE BELOW** (SAVE 5%) ⚡️', use_container_width=True)
         l, r = st.columns(2)
         l.link_button('BY E-MAIL', st.secrets['email'], use_container_width=True)
         r.link_button('BY PHONE',  st.secrets['phone'], use_container_width=True)
@@ -124,7 +120,7 @@ def Check_Against_Geofences(latitude, longitude):
 def Get_Place_Suggestions(input_text, api_key):
     endpoint = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
     params = {
-        "input": input_text + ' Beach, FL, USA',
+        "input": input_text,
         "types": "address",
         "key": api_key
     }
@@ -148,12 +144,20 @@ def Get_Customer_Stay():
     l, r      = st.columns([1,2])
 
     with l:
-        address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=100)
+        address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=200)
 
     if address:
         suggestions = Get_Place_Suggestions(address, map_key)
         if suggestions.get("predictions"):
-            st.session_state.suggestions = [prediction["description"] for prediction in suggestions["predictions"]]
+            predictions = [prediction["description"] for prediction in suggestions["predictions"]]
+            temp        = []
+
+            for prediction in predictions:
+                if any(community in prediction for community in st.secrets['communities']):
+                    temp.append(prediction)
+
+            st.session_state.suggestions = temp
+            
         else:
             st.session_state.suggestions = []
 
@@ -185,7 +189,6 @@ def Get_Customer_Stay():
                     st.session_state.CUSTOMER['stay_forbid'] = area['forbid']
 
                     st.session_state.STATE = 'SHOP'
-                    # st.rerun()
                     Shop()
 
 
