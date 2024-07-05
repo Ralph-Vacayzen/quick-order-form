@@ -14,20 +14,20 @@ from st_keyup import st_keyup
 st.set_page_config(page_title='Vacayzen | Quick Order Form', page_icon=':material/shopping_bag:')
 
 
-# hide_streamlit_style = """
-#             <style>
-#             #MainMenu {visibility: hidden;}
-#             footer {visibility: hidden;}
-#             header {visibility: hidden;}
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
 
-#             .block-container
-#             {
-#                 padding-top: 1rem;
-#                 margin-top: 1rem;
-#             }
-#             </style>
-#             """
-# st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+            .block-container
+            {
+                padding-top: 1rem;
+                margin-top: 1rem;
+            }
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 
 if 'STATE' not in st.session_state:
