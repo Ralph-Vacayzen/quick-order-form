@@ -121,8 +121,7 @@ def Check_Against_Geofences(latitude, longitude):
         
     return {'name': None,     'forbid': None}
 
-#TEMP
-def get_place_suggestions(input_text, api_key):
+def Get_Place_Suggestions(input_text, api_key):
     endpoint = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
     params = {
         "input": input_text + ' Beach, FL, USA',
@@ -151,9 +150,8 @@ def Get_Customer_Stay():
     with l:
         address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=100)
 
-    #TEMP
     if address:
-        suggestions = get_place_suggestions(address, map_key)
+        suggestions = Get_Place_Suggestions(address, map_key)
         if suggestions.get("predictions"):
             st.session_state.suggestions = [prediction["description"] for prediction in suggestions["predictions"]]
         else:
