@@ -74,7 +74,7 @@
   "Classic Beach Service Set Up": {
     "ID": 132,
     "Status": "Active",
-    "Product": "Beach Services",
+    "Product": "Daily Beach Chairs",
     "ApplicableRateEngine": "6thDayFree",
     "DamageWaiver": "Optional",
     "DamageWaiverPercent": 0.05,
@@ -85,10 +85,10 @@
     "FirstDayRate": 52,
     "AdditionalDayRate": 52
   },
-  "Backpack Beach Chair & Umbrella Set": {
+  "Backpack Beach Chairs & Umbrella": {
     "ID": 137,
     "Status": "Active",
-    "Product": "Beach Gear Rentals",
+    "Product": "Backpack Beach Chairs",
     "ApplicableRateEngine": "7thDayFree",
     "DamageWaiver": "Optional",
     "DamageWaiverPercent": 0.05,
