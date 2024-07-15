@@ -27,7 +27,7 @@ hide_streamlit_style = """
             }
             </style>
             """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 if 'STATE' not in st.session_state:
@@ -92,9 +92,9 @@ def Address_to_Coordinates(address):
 
         data = response.json()
 
-        if "candidates" in data and data["candidates"]:
-            address  = data["candidates"][0]["address"]
-            location = data["candidates"][0]["location"]
+        if 'candidates' in data and data['candidates']:
+            address  = data['candidates'][0]['address']
+            location = data['candidates'][0]['location']
 
             return {
                 'address':   address,
@@ -117,22 +117,21 @@ def Check_Against_Geofences(latitude, longitude):
         
     return {'name': None,     'forbid': None}
 
-def Get_Place_Suggestions(input_text, api_key):
-    endpoint = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
+def Get_Place_Suggestions(input_text):
+    endpoint = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
     params = {
-        "input": input_text,
-        "location": st.secrets['map_location'],
-        "radius": st.secrets['map_radius'],
-        "components": 'country:us',
-        "language": 'en',
-        "types": "address",
-        "key": api_key
+        'input': input_text,
+        'location': st.secrets['map_location'],
+        'radius': st.secrets['map_radius'],
+        'components': 'country:us',
+        'language': 'en',
+        'types': "address",
+        'key': st.secrets['map_key']
     }
     response = requests.get(endpoint, params=params)
     return response.json()
 
 def Get_Customer_Stay():
-    map_key = st.secrets['map_key']
 
     if "suggestions" not in st.session_state:
         st.session_state.suggestions = []
@@ -151,7 +150,7 @@ def Get_Customer_Stay():
         address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=200)
 
     if address:
-        suggestions = Get_Place_Suggestions(address, map_key)
+        suggestions = Get_Place_Suggestions(address)
         if suggestions.get("predictions"):
             predictions = [prediction["description"] for prediction in suggestions["predictions"]]
             st.session_state.suggestions = predictions
