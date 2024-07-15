@@ -120,7 +120,7 @@ def Check_Against_Geofences(latitude, longitude):
 def Get_Place_Suggestions(input_text, api_key):
     endpoint = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
     params = {
-        "input": input_text,
+        "input": input_text + ', FL',
         "types": "address",
         "key": api_key
     }
