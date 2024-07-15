@@ -11,7 +11,7 @@ from shapely.geometry import Point, Polygon
 from st_keyup import st_keyup
 
 
-st.set_page_config(page_title='Vacayzen | Quick Order Form', page_icon=':material/shopping_bag:')
+st.set_page_config(page_title='Vacayzen Quick Order', page_icon=':material/shopping_bag:')
 
 
 hide_streamlit_style = """
@@ -56,11 +56,10 @@ def Header(withLinks):
     m.image(st.secrets['logo'])
 
     if withLinks:
-        st.markdown('**WAYS TO ORDER**')
-        st.button('⚡️ **ORDER ONLINE BELOW** (SAVE 5%) ⚡️', use_container_width=True)
+        st.button('⚡️ **ORDER BELOW** (SAVE 5%) ⚡️', use_container_width=True)
         l, r = st.columns(2)
-        l.link_button('BY E-MAIL', st.secrets['email'], use_container_width=True)
-        r.link_button('BY PHONE',  st.secrets['phone'], use_container_width=True)
+        l.link_button('ORDER BY E-MAIL', st.secrets['email'], use_container_width=True)
+        r.link_button('ORDER BY PHONE',  st.secrets['phone'], use_container_width=True)
 
 
 
@@ -193,35 +192,26 @@ def Get_Customer_Stay():
 def Get_Guest_Details():
     st.header('About You')
 
-    if 'famous_name' not in st.session_state:
-        famous_names = ['Keanu Reeves','Bruce Lee','Albert Einstein','Elivs Presley','Captain America','Clark Kent']
-        st.session_state.famous_name  = random.choice(famous_names)
+    # if 'famous_name' not in st.session_state:
+    #     famous_names = ['Keanu Reeves','Bruce Lee','Albert Einstein','Elivs Presley','Captain America','Clark Kent']
+    #     st.session_state.famous_name  = random.choice(famous_names)
 
-    if 'punny_email' not in st.session_state:
-        punny_emails = ['relaxing@thebeach.now','laughing@greatjokes.haha','looking@sunsets.wow']
-        st.session_state.punny_email  = random.choice(punny_emails)
+    # if 'punny_email' not in st.session_state:
+    #     punny_emails = ['relaxing@thebeach.now','laughing@greatjokes.haha','looking@sunsets.wow']
+    #     st.session_state.punny_email  = random.choice(punny_emails)
 
     options = [
-        'Property Manager',
-        'Saw Equipment / Vehicles',
-        'Online (Google, Facebook, etc.)',
-        'A friend told us about you.',
-        'Other.'
+        'Text',
+        'E-mail',
+        'Phone',
         ]
 
     l, m, r = st.columns(3)
 
-    st.session_state.CUSTOMER['name']          = l.text_input('What is your name?',   placeholder=st.session_state.famous_name)
+    st.session_state.CUSTOMER['name']          = l.text_input('What is your name?')
     st.session_state.CUSTOMER['phone_number']  = m.text_input('Your phone number?',   placeholder='123-456-7890')
-    st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?', placeholder=st.session_state.punny_email)
-    how                                        = st.selectbox('How did you hear about Vacayzen?', options=options, placeholder='Choose an option.', index=None)
-
-    if how == 'Other.':
-        how_2 = st.text_input('Can you elaborate on how you heard about us?', placeholder='Our meeting was destiny.')
-        st.session_state.CUSTOMER['how'] = how_2
-    else:
-        st.session_state.CUSTOMER['how'] = how
-
+    st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?')
+    st.session_state.CUSTOMER['how']           = st.selectbox('Preferred method of contact?', options=options, placeholder='Choose an option.', index=None)
 
 
 
@@ -232,11 +222,11 @@ def ItemCard(asset):
 
     with st.container(border=True):
         if isMinimum:
-            rate = pd.DataFrame([rate], columns=['First','Additional','Minimum'])
+            rate = pd.DataFrame([rate], columns=['1st Day','Additional','Minimum'])
             st.write(f'**{asset['name']}**')
         else:
             rate = rate[:2]
-            rate = pd.DataFrame([rate], columns=['First','Additional'])
+            rate = pd.DataFrame([rate], columns=['1st Day','Additional'])
             st.markdown(f'**{asset['name']}**')
         
         st.dataframe(rate, use_container_width=True, hide_index=True)
