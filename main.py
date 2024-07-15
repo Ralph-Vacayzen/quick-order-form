@@ -292,7 +292,7 @@ def Shop():
                     placement = 0
     
     
-    if st.button('🏖️ Submit', use_container_width=True, type='primary', key='shop_checkout'):
+    if st.button('PAY $50 DEPOSIT & SUBMIT', use_container_width=True, type='primary', key='shop_checkout'):
         st.toast('Submitting...')
         interest_array = []
         
