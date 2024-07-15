@@ -120,7 +120,11 @@ def Check_Against_Geofences(latitude, longitude):
 def Get_Place_Suggestions(input_text, api_key):
     endpoint = "https://maps.googleapis.com/maps/api/place/autocomplete/json"
     params = {
-        "input": input_text + ', Florida, USA',
+        "input": input_text,
+        "location": st.secrets['map_location'],
+        "radius": st.secrets['map_radius'],
+        "components": 'country:us',
+        "language": 'en',
         "types": "address",
         "key": api_key
     }
@@ -150,13 +154,7 @@ def Get_Customer_Stay():
         suggestions = Get_Place_Suggestions(address, map_key)
         if suggestions.get("predictions"):
             predictions = [prediction["description"] for prediction in suggestions["predictions"]]
-            temp        = []
-
-            for prediction in predictions:
-                if any(community in prediction for community in st.secrets['communities']):
-                    temp.append(prediction)
-
-            st.session_state.suggestions = temp
+            st.session_state.suggestions = predictions
             
         else:
             st.session_state.suggestions = []
