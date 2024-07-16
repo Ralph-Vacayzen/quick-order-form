@@ -77,56 +77,69 @@ def Goodbye():
     socials.render()
 
 
-def Address_to_Coordinates(address):
+# def Address_to_Coordinates(address):
 
-    url      = st.secrets['geo_url']
-    params   = {'singleLine': address, 'f': 'json', 'maxLocations': 1 }
-    response = requests.get(url, params=params)
+#     url      = st.secrets['geo_url']
+#     params   = {'singleLine': address, 'f': 'json', 'maxLocations': 1 }
+#     response = requests.get(url, params=params)
 
-    if response.status_code == 200:
+#     if response.status_code == 200:
 
-        data = response.json()
+#         data = response.json()
 
-        if 'candidates' in data and data['candidates']:
-            address  = data['candidates'][0]['address']
-            location = data['candidates'][0]['location']
+#         if 'candidates' in data and data['candidates']:
+#             address  = data['candidates'][0]['address']
+#             location = data['candidates'][0]['location']
 
-            return {
-                'address':   address,
-                'coordinates': [location['y'], location['x']]
-                }
+#             return {
+#                 'address':   address,
+#                 'coordinates': [location['y'], location['x']]
+#                 }
     
-    return None
+#     return None
 
 
-def Check_Against_Geofences(latitude, longitude):
-    geofences = pd.read_json('geofences.json')
-    point     = Point(longitude, latitude)
+# def Check_Against_Geofences(latitude, longitude):
+#     geofences = pd.read_json('geofences.json')
+#     point     = Point(longitude, latitude)
 
-    for geofence in geofences:
-        geofence_area = geofences[geofence]['area']
-        polygon       = Polygon(geofence_area)
+#     for geofence in geofences:
+#         geofence_area = geofences[geofence]['area']
+#         polygon       = Polygon(geofence_area)
 
-        if polygon.contains(point):
-            return {'name': geofence, 'forbid': geofences[geofence]['forbid']}
+#         if polygon.contains(point):
+#             return {'name': geofence, 'forbid': geofences[geofence]['forbid']}
         
-    return {'name': None,     'forbid': None}
+#     return {'name': None,     'forbid': None}
 
 
-def Get_Place_Suggestions(input_text):
-    endpoint = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
-    params = {
-        'input': input_text,
-        'location': st.secrets['map_location'],
-        'radius': st.secrets['map_radius'],
-        'components': 'country:us',
-        'language': 'en',
-        'types': "address",
-        'key': st.secrets['map_key']
-    }
-    response = requests.get(endpoint, params=params)
-    return response.json()
+# def Get_Place_Suggestions(input_text):
+#     endpoint = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
+#     params = {
+#         'input': input_text,
+#         'location': st.secrets['map_location'],
+#         'radius': st.secrets['map_radius'],
+#         'components': 'country:us',
+#         'language': 'en',
+#         'types': "address",
+#         'key': st.secrets['map_key']
+#     }
+#     response = requests.get(endpoint, params=params)
+#     return response.json()
 
+def Get_Guest_Details():
+    options = [
+        'Text (SMS)',
+        'E-mail',
+        'Phone',
+        ]
+
+    l, m, r = st.columns(3)
+
+    st.session_state.CUSTOMER['name']          = l.text_input('What is your name?',   placeholder='Jane Doe')
+    st.session_state.CUSTOMER['phone_number']  = m.text_input('Your phone number?',   placeholder='123-456-7890')
+    st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?', placeholder='email@gmail.com')
+    st.session_state.CUSTOMER['how']           = st.selectbox('Preferred method of contact?', options=options, placeholder='Choose an option.', index=0)
 
 def Get_Customer_Stay():
 
@@ -141,83 +154,81 @@ def Get_Customer_Stay():
     st.session_state.CUSTOMER['arrival']   = st.session_state.CUSTOMER['arrival'].strftime('%m/%d/%Y')
     st.session_state.CUSTOMER['departure'] = st.session_state.CUSTOMER['departure'].strftime('%m/%d/%Y')
 
-    l, r      = st.columns([1,2])
+    Get_Guest_Details()
 
-    with l:
-        address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=200)
+    # l, r      = st.columns([1,2])
 
-    if address:
-        suggestions = Get_Place_Suggestions(address)
-        if suggestions.get("predictions"):
-            predictions = [prediction["description"] for prediction in suggestions["predictions"]]
-            st.session_state.suggestions = predictions
+    # with l:
+    #     address = st_keyup('Where will you be staying?', placeholder='Start typing here...', debounce=200)
+
+    # if address:
+    #     suggestions = Get_Place_Suggestions(address)
+    #     if suggestions.get("predictions"):
+    #         predictions = [prediction["description"] for prediction in suggestions["predictions"]]
+    #         st.session_state.suggestions = predictions
             
-        else:
-            st.session_state.suggestions = []
+    #     else:
+    #         st.session_state.suggestions = []
 
-    st.session_state.CUSTOMER['stay_address'] = r.selectbox("Full address:", st.session_state.suggestions)
+    # st.session_state.CUSTOMER['stay_address'] = r.selectbox("Full address:", st.session_state.suggestions)
 
+
+    # if st.button('Begin Shopping', use_container_width=True, type='primary'):
+    #     if not st.session_state.CUSTOMER['stay_address']:
+    #         st.warning('Please provide an address.')
+
+    #     else:
+    #         location = Address_to_Coordinates(st.session_state.CUSTOMER['stay_address'])
+
+    #         if not location['coordinates']:
+    #             st.warning('Invalid address. Please enter a valid address.')
+
+    #         else:
+    #             st.session_state.CUSTOMER['stay_address']   = location['address']
+    #             st.session_state.CUSTOMER['stay_latitude']  = location['coordinates'][0]
+    #             st.session_state.CUSTOMER['stay_longitude'] = location['coordinates'][1]
+
+    #             area = Check_Against_Geofences(st.session_state.CUSTOMER['stay_latitude'], st.session_state.CUSTOMER['stay_longitude'])
+
+    #             if not area:
+    #                 st.warning('The address provided is incomplete or incorrect. Please double-check your entry.')
+
+    #             else:
+    #                 st.session_state.CUSTOMER['stay_area']   = area['name']
+    #                 st.session_state.CUSTOMER['stay_forbid'] = area['forbid']
+
+    #                 st.session_state.STATE = 'SHOP'
+    #                 Shop()
 
     if st.button('Begin Shopping', use_container_width=True, type='primary'):
-        if not st.session_state.CUSTOMER['stay_address']:
-            st.warning('Please provide an address.')
-
-        else:
-            location = Address_to_Coordinates(st.session_state.CUSTOMER['stay_address'])
-
-            if not location['coordinates']:
-                st.warning('Invalid address. Please enter a valid address.')
-
-            else:
-                st.session_state.CUSTOMER['stay_address']   = location['address']
-                st.session_state.CUSTOMER['stay_latitude']  = location['coordinates'][0]
-                st.session_state.CUSTOMER['stay_longitude'] = location['coordinates'][1]
-
-                area = Check_Against_Geofences(st.session_state.CUSTOMER['stay_latitude'], st.session_state.CUSTOMER['stay_longitude'])
-
-                if not area:
-                    st.warning('The address provided is incomplete or incorrect. Please double-check your entry.')
-
-                else:
-                    st.session_state.CUSTOMER['stay_area']   = area['name']
-                    st.session_state.CUSTOMER['stay_forbid'] = area['forbid']
-
-                    st.session_state.STATE = 'SHOP'
-                    Shop()
+        st.session_state.STATE = 'SHOP'
+        Shop()
 
 
-def Get_Guest_Details():
-    st.header('About You')
 
-    options = [
-        'Text',
-        'E-mail',
-        'Phone',
-        ]
-
-    l, m, r = st.columns(3)
-
-    st.session_state.CUSTOMER['name']          = l.text_input('What is your name?',   placeholder='Jane Doe')
-    st.session_state.CUSTOMER['phone_number']  = m.text_input('Your phone number?',   placeholder='123-456-7890')
-    st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?', placeholder='email@gmail.com')
-    st.session_state.CUSTOMER['how']           = st.selectbox('Preferred method of contact?', options=options, placeholder='Choose an option.', index=None)
 
 
 def Item_Card(asset):
-    isMinimum = not math.isnan(asset['attributes'].MinimumRate)
+    # isMinimum = not math.isnan(asset['attributes'].MinimumRate)
 
-    rate = [f'${asset['attributes'].FirstDayRate}', f'${asset['attributes'].AdditionalDayRate}', f'${asset['attributes'].MinimumRate}']
+    # rate = [f'${asset['attributes'].FirstDayRate}', f'${asset['attributes'].AdditionalDayRate}', f'${asset['attributes'].MinimumRate}']
+
+    # with st.container(border=True):
+    #     if isMinimum:
+    #         rate = pd.DataFrame([rate], columns=['1st Day','Additional','Minimum'])
+    #         st.write(f'**{asset['name']}**')
+    #     else:
+    #         rate = rate[:2]
+    #         rate = pd.DataFrame([rate], columns=['1st Day','Additional'])
+    #         st.markdown(f'**{asset['name']}**')
+        
+    #     st.dataframe(rate, use_container_width=True, hide_index=True)
+    #     count = st.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
 
     with st.container(border=True):
-        if isMinimum:
-            rate = pd.DataFrame([rate], columns=['1st Day','Additional','Minimum'])
-            st.write(f'**{asset['name']}**')
-        else:
-            rate = rate[:2]
-            rate = pd.DataFrame([rate], columns=['1st Day','Additional'])
-            st.markdown(f'**{asset['name']}**')
+        st.markdown(f'**{asset['name']}**')
         
-        st.dataframe(rate, use_container_width=True, hide_index=True)
+        st.write(f'1st Day: \${asset['attributes'].FirstDayRate}, Additional: \${asset['attributes'].AdditionalDayRate}')
         count = st.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
 
 
@@ -261,8 +272,8 @@ def Get_Submission(interests, assets):
         'how':                st.session_state.CUSTOMER['how'],
         'start_date':         st.session_state.CUSTOMER['arrival'],
         'end_date':           st.session_state.CUSTOMER['departure'],
-        'area':               st.session_state.CUSTOMER['stay_area'],
-        'address':            st.session_state.CUSTOMER['stay_address'],
+        # 'area':               st.session_state.CUSTOMER['stay_area'],
+        # 'address':            st.session_state.CUSTOMER['stay_address'],
         'more_info_requestd': interests,
         'assets':             assets,
     }
@@ -301,7 +312,7 @@ def Shop():
         if st.session_state.CUSTOMER['stay_area']:
             st.info(f'You will be staying in **{st.session_state.CUSTOMER['stay_area']}**, and the community permits our whole product offering!', icon=':material/where_to_vote:')
     
-    Get_Guest_Details()
+    # Get_Guest_Details()
 
     for asset in df:
         if (st.session_state.CUSTOMER['stay_forbid'] is not None) and (df[asset].Product in st.session_state.CUSTOMER['stay_forbid']):
