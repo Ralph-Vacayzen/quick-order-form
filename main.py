@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import random
+import string
 import math
 import gspread
 
@@ -46,6 +47,7 @@ if 'CUSTOMER' not in st.session_state:
     'phone_number':   None,
     'email_address':  None,
     'how':            None,
+    'session_id':     None,
     }
 
 
@@ -62,9 +64,6 @@ def Header(withLinks):
         r.link_button('ORDER BY PHONE',  st.secrets['phone'], use_container_width=True)
 
 
-
-
-
 def Greeting():
     st.title('Place Order')
 
@@ -76,9 +75,6 @@ def Goodbye():
     st.write('')
     socials = SocialMediaIcons(st.secrets['socials'])
     socials.render()
-
-
-
 
 
 def Address_to_Coordinates(address):
@@ -116,6 +112,7 @@ def Check_Against_Geofences(latitude, longitude):
         
     return {'name': None,     'forbid': None}
 
+
 def Get_Place_Suggestions(input_text):
     endpoint = 'https://maps.googleapis.com/maps/api/place/autocomplete/json'
     params = {
@@ -129,6 +126,7 @@ def Get_Place_Suggestions(input_text):
     }
     response = requests.get(endpoint, params=params)
     return response.json()
+
 
 def Get_Customer_Stay():
 
@@ -188,7 +186,6 @@ def Get_Customer_Stay():
                     Shop()
 
 
-
 def Get_Guest_Details():
     st.header('About You')
 
@@ -200,14 +197,13 @@ def Get_Guest_Details():
 
     l, m, r = st.columns(3)
 
-    st.session_state.CUSTOMER['name']          = l.text_input('What is your name?')
+    st.session_state.CUSTOMER['name']          = l.text_input('What is your name?',   placeholder='Jane Doe')
     st.session_state.CUSTOMER['phone_number']  = m.text_input('Your phone number?',   placeholder='123-456-7890')
-    st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?')
+    st.session_state.CUSTOMER['email_address'] = r.text_input('Your e-mail address?', placeholder='email@gmail.com')
     st.session_state.CUSTOMER['how']           = st.selectbox('Preferred method of contact?', options=options, placeholder='Choose an option.', index=None)
 
 
-
-def ItemCard(asset):
+def Item_Card(asset):
     isMinimum = not math.isnan(asset['attributes'].MinimumRate)
 
     rate = [f'${asset['attributes'].FirstDayRate}', f'${asset['attributes'].AdditionalDayRate}', f'${asset['attributes'].MinimumRate}']
@@ -225,7 +221,74 @@ def ItemCard(asset):
         count = st.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
 
 
+def Get_Interests():
+    array = []
+        
+    for key in st.session_state.keys():
+        if st.session_state[key]:
+            interest = ''
+            if 'check_' in key:
+                interest = key[6:]
+                array.append(interest)
+    
+    interests = '\n'.join(array)
 
+    return interests
+
+
+def Get_Assets():
+    array = []
+
+    for key in st.session_state.keys():
+        if 'asset_' in key:
+            asset = ''
+            if st.session_state[key] > 0:
+                asset = f'({st.session_state[key]}) {key[6:]}'
+                array.append(asset)
+    
+    assets = '\n'.join(array)
+
+    return assets
+
+
+def Get_Submission(interests, assets):
+    submission = {
+        'submitted_time':     pd.to_datetime('today').strftime('%m/%d/%Y %H:%M:%S'),
+        'session_id':         st.session_state.CUSTOMER['session_id'],
+        'name':               st.session_state.CUSTOMER['name'],
+        'phone_number':       st.session_state.CUSTOMER['phone_number'],
+        'email_address':      st.session_state.CUSTOMER['email_address'],
+        'how':                st.session_state.CUSTOMER['how'],
+        'start_date':         st.session_state.CUSTOMER['arrival'],
+        'end_date':           st.session_state.CUSTOMER['departure'],
+        'area':               st.session_state.CUSTOMER['stay_area'],
+        'address':            st.session_state.CUSTOMER['stay_address'],
+        'more_info_requestd': interests,
+        'assets':             assets,
+    }
+
+    return submission
+
+
+def Get_Session_ID(ids):
+    session_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
+
+    while (session_id in ids):
+        session_id = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
+
+    return session_id
+
+
+def Is_Valid_Name(name):
+    return name != None and name != ''
+
+
+def Is_Valid_Phone(number):
+    return len(number) >= 10
+
+
+def Is_Valid_Email(email):
+    return '@' in email and '.' in email
 
 
 def Shop():
@@ -253,8 +316,13 @@ def Shop():
     for asset_group in assets:
         st.header(f'**{asset_group}**', help=assets[asset_group][0]['attributes'].AssetDescription)
 
-        for asset in assets[asset_group]:
-            ItemCard(asset)
+        if asset_group == 'Bike Rentals':
+            with st.expander(f'Tap for {asset_group}', expanded=False):
+                for asset in assets[asset_group]:
+                    Item_Card(asset)
+        else:
+            for asset in assets[asset_group]:
+                Item_Card(asset)
     
     st.header('Additional Services', help='An agent will provide more information on services per your request.')
     services = [
@@ -284,58 +352,40 @@ def Shop():
                     placement = 0
     
     
-    if st.button('PAY $50 DEPOSIT & SUBMIT', use_container_width=True, type='primary', key='shop_checkout'):
-        st.toast('Submitting...')
-        interest_array = []
-        
-        for key in st.session_state.keys():
-            if st.session_state[key]:
-                interest = ''
-                if 'check_' in key:
-                    interest = key[6:]
-                    interest_array.append(interest)
-        
-        interests = '\n'.join(interest_array)
+    if st.button('SUBMIT', use_container_width=True, type='primary', key='shop_checkout'):
+        isValidName  = Is_Valid_Name(st.session_state.CUSTOMER['name'])
+        isValidPhone = Is_Valid_Phone(st.session_state.CUSTOMER['phone_number'])
+        isValidEmail = Is_Valid_Email(st.session_state.CUSTOMER['email_address'])
 
-        asset_array = []
+        if not isValidName:  st.warning('Please provide a name for your submission.')
+        if not isValidPhone: st.warning('Please provide a valid phone number with area code for your submission.')
+        if not isValidEmail: st.warning('Please provide a valid e-mail address for your submission.')
+        if isValidName and isValidPhone and isValidEmail:
 
-        for key in st.session_state.keys():
-            if 'asset_' in key:
-                asset = ''
-                if st.session_state[key] > 0:
-                    asset = f'({st.session_state[key]}) {key[6:]}'
-                    asset_array.append(asset)
-        
-        assets = '\n'.join(asset_array)
+            st.toast('Submitting...')
 
-        submission = {
-            'submitted_time': pd.to_datetime('today').strftime('%m/%d/%Y %H:%M:%S'),
-            'name': st.session_state.CUSTOMER['name'],
-            'phone_number': st.session_state.CUSTOMER['phone_number'],
-            'email_address': st.session_state.CUSTOMER['email_address'],
-            'how': st.session_state.CUSTOMER['how'],
-            'start_date': st.session_state.CUSTOMER['arrival'],
-            'end_date': st.session_state.CUSTOMER['departure'],
-            'area': st.session_state.CUSTOMER['stay_area'],
-            'address': st.session_state.CUSTOMER['stay_address'],
-            'more_info_requestd': interests,
-            'assets': assets,
-        }
+            credentials  = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets['key'], st.secrets['scope'])
+            client       = gspread.authorize(credentials)
+            sheet        = client.open(st.secrets['sheet']).worksheet(st.secrets['tab'])
 
-        credentials  = ServiceAccountCredentials.from_json_keyfile_dict(st.secrets['key'], st.secrets['scope'])
-        client       = gspread.authorize(credentials)
-        sheet        = client.open(st.secrets['sheet']).worksheet(st.secrets['tab'])  
-        row          = list(submission.values())
-        sheet.append_row(row)
+            id_values    = sheet.get_values(st.secrets['id_range'])
+            ids          = []
+            
+            for value in id_values:
+                if value[0] != '':
+                    ids.append(value[0])
+            
+            st.session_state.CUSTOMER['session_id'] = Get_Session_ID(ids)
 
-        st.session_state.STATE = 'DONE'
-        st.rerun()
+            interests  = Get_Interests()
+            assets     = Get_Assets()
+            submission = Get_Submission(interests, assets)
 
+            entry      = list(submission.values())
+            sheet.append_row(entry)
 
-        
-    
-
-
+            st.session_state.STATE = 'DONE'
+            st.rerun()
 
 
 match st.session_state.STATE:
