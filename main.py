@@ -200,9 +200,7 @@ def Get_Customer_Stay():
     #                 st.session_state.STATE = 'SHOP'
     #                 Shop()
 
-    if st.button('Begin Shopping', use_container_width=True, type='primary'):
-        st.session_state.STATE = 'SHOP'
-        Shop()
+    Shop()
 
 
 
@@ -228,7 +226,7 @@ def Item_Card(asset):
     with st.container(border=True):
         st.markdown(f'**{asset['name']}**')
         
-        st.write(f'1st Day: \${asset['attributes'].FirstDayRate}, Additional: \${asset['attributes'].AdditionalDayRate}')
+        st.write(fr'1st Day: \${asset['attributes'].FirstDayRate}, Additional: \${asset['attributes'].AdditionalDayRate}')
         count = st.number_input('Quantity',0,step=1, key=f'asset_{asset['name']}', label_visibility='collapsed')
 
 
@@ -404,11 +402,11 @@ match st.session_state.STATE:
         Header(withLinks=True)
         Greeting()
         Get_Customer_Stay()
-    case 'SHOP':
-        Header(withLinks=True)
-        Greeting()
-        Get_Customer_Stay()
-        Shop()
+    # case 'SHOP':
+    #     Header(withLinks=True)
+    #     Greeting()
+    #     Get_Customer_Stay()
+    #     Shop()
     case 'DONE':
         Header(withLinks=False)
         Goodbye()
