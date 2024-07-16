@@ -192,14 +192,6 @@ def Get_Customer_Stay():
 def Get_Guest_Details():
     st.header('About You')
 
-    # if 'famous_name' not in st.session_state:
-    #     famous_names = ['Keanu Reeves','Bruce Lee','Albert Einstein','Elivs Presley','Captain America','Clark Kent']
-    #     st.session_state.famous_name  = random.choice(famous_names)
-
-    # if 'punny_email' not in st.session_state:
-    #     punny_emails = ['relaxing@thebeach.now','laughing@greatjokes.haha','looking@sunsets.wow']
-    #     st.session_state.punny_email  = random.choice(punny_emails)
-
     options = [
         'Text',
         'E-mail',
