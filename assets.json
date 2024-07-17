@@ -95,7 +95,7 @@
     "RentalAddOnFee": "Optional",
     "RentalAddOnFeePercent": 0.06,
     "Taxable": true,
-    "AssetDescription": "They are delivered for free to your vacation doorstep. Note: This set is not set up daily by Vacayzen. Size Recommendation: Chairs are recommended for those 240 pounds or less.",
+    "AssetDescription": "",
     "FirstDayRate": 60,
     "AdditionalDayRate": 10
   }
