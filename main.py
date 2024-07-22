@@ -1,3 +1,4 @@
+import streamlit.components.v1 as components
 import streamlit as st
 import pandas as pd
 import requests
@@ -15,20 +16,45 @@ from st_keyup import st_keyup
 st.set_page_config(page_title='Vacayzen Quick Order', page_icon=':material/shopping_bag:')
 
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
+meta_pixel = """
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1368733537438792');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1368733537438792&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+"""
 
-            .block-container
-            {
-                padding-top: 1rem;
-                margin-top: 1rem;
-            }
-            </style>
-            """
+components.html(meta_pixel)
+
+
+hide_streamlit_style = """
+<style>
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+.block-container
+{
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+</style>
+"""
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
 
 
 if 'STATE' not in st.session_state:
