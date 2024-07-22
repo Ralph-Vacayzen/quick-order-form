@@ -36,7 +36,7 @@ src="https://www.facebook.com/tr?id=1368733537438792&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 """
 
-components.html(meta_pixel)
+components.html(meta_pixel, height=0)
 
 
 hide_streamlit_style = """
