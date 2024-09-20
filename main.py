@@ -365,10 +365,11 @@ def Shop():
         'Airport Transfer / Transport',
         'Private Chef',
         'Grocery Shopping',
-        'Sunset Photoshoot',
+        'Electric Bikes',
         'Fishing Trips',
-        'Paddleboard & Kayak Rentals',
-        'Babysitting'
+        'Sunset Photoshoot',
+        'Babysitting',
+        'Paddleboard & Kayak Rentals'
     ]
 
     placement = 0
